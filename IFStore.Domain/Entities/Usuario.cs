@@ -9,8 +9,6 @@ namespace IFStore.Domain.Entities
 {
     public class Usuario : BaseEntity<int>
     {
-        public Usuario() { }
-
         public String Nome { get; set; }
         public String Senha { get; set; }
         public String Login { get; set; }

@@ -9,7 +9,6 @@ namespace IFStore.Domain.Entities
 {
     public class Grupo : BaseEntity<int>
     {
-        public Grupo() { }
         public String Nome { get; set; }
     }
 }
