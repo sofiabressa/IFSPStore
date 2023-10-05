@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace IFSPStore.text;
     [TestClass]
-    public class UnitTest1{
+    public class UnitTestDomain{
      
         [TestMethod]
         public void TestCidade()
