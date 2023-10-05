@@ -7,6 +7,34 @@ using System.Text.Json.Serialization;
 
 namespace IFSPStore.Test
 {
+    public class MyDbContext : DbContext
+    {
+        public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Cidade> Cidade { get; set; }
+        public DbSet<Grupo> Grupo { get; set; }
+        public DbSet<Produto> Produto { get; set; }
+        public MyDbContext()
+        {
+            //Força a criação do banco de dados;
+            Database.EnsureCreated();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var server = "localhost";
+            var port = "3306";
+            var database = "IFSPStore";
+            var username = "root";
+            var password = "";
+            var strCon = $"Server={server};Port={port};" + $"Database={database}; Uid={username};Pwd={password}";
+
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseMySql(strCon, ServerVersion.AutoDetect(strCon));
+            }
+        }
+    }
+
     [TestClass]
     public class UnitTestRepository
     {
@@ -16,9 +44,11 @@ namespace IFSPStore.Test
         {
             using (var context = new MyDbContext())
             {
-                var usuario = new Usuario("Murilo Varges",
-                            "murilo", "semsenha", "email",
-                            DateTime.UtcNow.ToLocalTime(), DateTime.UtcNow.ToLocalTime(), true);
+                //var usuario = new Usuario("Murilo Varges",
+                //            "murilo", "semsenha", "email",
+                //            DateTime.UtcNow.ToLocalTime(), DateTime.UtcNow.ToLocalTime(), true);
+                var usuario = new Usuario();
+
 
                 context.Usuario.Add(usuario);
                 context.SaveChanges();
@@ -46,7 +76,9 @@ namespace IFSPStore.Test
         {
             using (var context = new MyDbContext())
             {
-                var cidade = new Cidade("Aracatuba", "SP");
+                var cidade = new Cidade();
+                cidade.Nome = "Teste";
+                cidade.Estado = "SP";
 
                 context.Cidade.Add(cidade);
                 context.SaveChanges();
@@ -75,7 +107,8 @@ namespace IFSPStore.Test
         {
             using (var context = new MyDbContext())
             {
-                var grupo = new Grupo("Roupas");
+                var grupo = new Grupo();
+                grupo.Nome = "Chocolates";
 
                 context.Grupo.Add(grupo);
                 context.SaveChanges();
@@ -98,31 +131,5 @@ namespace IFSPStore.Test
         #endregion
     }
 
-    public class MyDbContext : DbContext
-    {
-        public DbSet<Usuario> Usuario { get; set; }
-        public DbSet<Cidade> Cidade { get; set; }
-        public DbSet<Grupo> Grupo { get; set; }
-        public DbSet<Produto> Produto { get; set; }
-        public MyDbContext()
-        {
-            //Força a criação do banco de dados;
-            Database.EnsureCreated();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var server = "localhost";
-            var port = "3306";
-            var database = "IFSPStore";
-            var username = "root";
-            var password = "";
-            var strCon = $"Server={server};Port={port};" + $"Database={database}; Uid={username};Pwd={password}";
-
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql(strCon, ServerVersion.AutoDetect(strCon));
-            }
-        }
-    }
+   
 }
